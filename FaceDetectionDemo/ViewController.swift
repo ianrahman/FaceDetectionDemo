@@ -21,6 +21,7 @@ class ViewController: UIViewController {
         imageView.frame = view.frame
         
         imagePicker.allowsEditing = true
+        imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         
         let tapGestureRecognizer = UITapGestureRecognizer(target:imagePicker, action:#selector(self.imageTapped(_:)))
