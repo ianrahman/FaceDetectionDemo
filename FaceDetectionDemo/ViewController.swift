@@ -86,6 +86,7 @@ class ViewController: UIViewController {
             faceBox.layer.borderWidth = 3
             faceBox.layer.borderColor = UIColor.red.cgColor
             faceBox.backgroundColor = UIColor.clear
+            
             imageView.addSubview(faceBox)
             
             if face.hasLeftEyePosition {
@@ -103,7 +104,9 @@ class ViewController: UIViewController {
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
         var newImage: UIImage
+        
         if let possibleImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             newImage = possibleImage
         } else if let possibleImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
@@ -111,6 +114,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
         } else {
             return
         }
+        
         OperationQueue.main.addOperation {
             self.imageView.contentMode = .scaleAspectFit
             self.imageView.image = newImage
@@ -119,7 +123,6 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
         
         dismiss(animated: true, completion: nil)
     }
-    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
