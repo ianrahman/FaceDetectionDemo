@@ -24,21 +24,28 @@ class ViewController: UIViewController {
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target:imagePicker, action:#selector(self.imageTapped(_:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(self.imageTapped(_:)))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if imageView.image == nil {
+            selectNewImage()
+        }
+    }
+    
+    // Remove red boxes from imageView
+    func imageTapped(_ sender: UITapGestureRecognizer) {
+        for subview in imageView.subviews {
+            subview.removeFromSuperview()
+        }
         
         selectNewImage()
     }
     
-    func imageTapped(_ sender: UITapGestureRecognizer) {
-        selectNewImage()
-    }
-    
     func selectNewImage() {
-        present(imagePicker, animated: true, completion: {
-            print("new image")
-        })
+        present(imagePicker, animated: true, completion: nil)
     }
     
     // Detect and highlight any faces in selected image
@@ -90,7 +97,6 @@ class ViewController: UIViewController {
             }
         }
     }
-    
 }
 
 // MARK: - UIImagePickerControllerDelegate Methods
@@ -106,7 +112,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
             return
         }
         OperationQueue.main.addOperation {
-            self.imageView.contentMode = .scaleToFill
+            self.imageView.contentMode = .scaleAspectFit
             self.imageView.image = newImage
             self.detect()
         }
@@ -118,5 +124,4 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
-    
 }
